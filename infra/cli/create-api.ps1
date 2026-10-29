@@ -64,11 +64,15 @@ $existingApiId = (Invoke-Aws apigatewayv2 get-apis `
 if ($existingApiId -and $existingApiId -ne "None") {
     $apiId = $existingApiId
     Write-Host "Found existing HTTP API: $ApiName (ID: $apiId)"
+    Invoke-Aws apigatewayv2 update-api `
+        --api-id $apiId `
+        --cors-configuration "AllowOrigins='*',AllowMethods='POST,OPTIONS',AllowHeaders='Content-Type,Authorization',MaxAge=3600" | Out-Null
 } else {
     Write-Host "Creating HTTP API '$ApiName'..."
     $apiJson = (Invoke-Aws apigatewayv2 create-api `
         --name $ApiName `
         --protocol-type HTTP `
+        --cors-configuration "AllowOrigins='*',AllowMethods='POST,OPTIONS',AllowHeaders='Content-Type,Authorization',MaxAge=3600" `
         --output json) -join "`n" | ConvertFrom-Json
     $apiId = $apiJson.ApiId
     Write-Host "Created HTTP API with ID: $apiId" -ForegroundColor Green
