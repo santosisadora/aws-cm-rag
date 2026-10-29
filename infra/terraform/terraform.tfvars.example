@@ -1,0 +1,25 @@
+# Copy to terraform.tfvars and adjust. terraform.tfvars is git-ignored.
+
+aws_region   = "us-east-1"
+project_name = "bedrock-rag"
+
+# bucket_name = "my-explicit-bucket-name"
+
+bedrock_model_ids = [
+  "amazon.titan-embed-text-v2:0",
+]
+
+bedrock_inference_profiles = {
+  "us.anthropic.claude-haiku-4-5-20251001-v1:0" = {
+    model_id = "anthropic.claude-haiku-4-5-20251001-v1:0"
+    regions  = ["us-east-1", "us-east-2", "us-west-2"]
+  }
+  "us.anthropic.claude-haiku-5-5" = {
+    model_id = "anthropic.claude-haiku-5-5"
+    regions  = ["us-east-1", "us-east-2", "us-west-2"]
+  }
+}
+
+tags = {
+  Environment = "dev"
+}
